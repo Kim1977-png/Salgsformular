@@ -158,30 +158,23 @@
       <button class="submit-btn" onclick="sendToEnreach()">Send ordre</button>
     </div>
 
-    <div id="successToast" class="toast success">✓ Ordre sendt til Enreach.</div>
+    <div id="successToast" class="toast success">✓ Ordre sendt.</div>
     <div id="errorToast" class="toast error"><span id="errorMsg">Noget gik galt.</span></div>
 
   </div>
 </div>
 
 <script>
-// ─── KONFIGURATION ─────────────────────────────────────────────────────────
-const API_URL      = "https://app.campaign.one/api/Service/AddNewCustomerUsingSource";
-const API_USERNAME = "api_playable@politiken.dk";
-const API_PASSWORD = "U38b-SBkW-49I7";
-const SOURCE_ID    = "4310";
-const CLIENT_ID    = "344";
-const ORIGIN       = "Politiken_Salgsformular";
+// ─── MAKE WEBHOOK URL ──────────────────────────────────────────────────────
+const MAKE_WEBHOOK = "https://hook.eu1.make.com/hv9xvs28xcs8e0ch0vs1zrqhc8lf3r19";
 
 // ─── SÆLGERE ───────────────────────────────────────────────────────────────
-// Tilføj/fjern sælgere: { id: "SÆLGER-ID", navn: "Navn" }
 const SAELGERE = [
   { id: "7007", navn: "Kim Erleben" },
   { id: "7008", navn: "Anna Nielsen" },
   { id: "7009", navn: "Mikkel Hansen" }
 ];
 
-// ─── PRODUKTER indlæses fra kampagner.json ─────────────────────────────────
 let PRODUKTER = [];
 
 async function init() {
@@ -192,7 +185,6 @@ async function init() {
     document.getElementById('loadingMsg').textContent = 'Kunne ikke indlæse kampagner.json – tjek at filen ligger i samme mappe.';
     return;
   }
-
   const selgerSelect = document.getElementById('selger');
   SAELGERE.forEach(s => {
     const opt = document.createElement('option');
@@ -200,7 +192,6 @@ async function init() {
     opt.textContent = s.navn;
     selgerSelect.appendChild(opt);
   });
-
   const produktSelect = document.getElementById('produkt');
   PRODUKTER.forEach((p, i) => {
     const opt = document.createElement('option');
@@ -208,7 +199,6 @@ async function init() {
     opt.textContent = p.navn;
     produktSelect.appendChild(opt);
   });
-
   document.getElementById('loadingMsg').classList.add('hidden');
   document.getElementById('formContent').classList.remove('hidden');
 }
@@ -258,7 +248,6 @@ REQUIRED.forEach(f => {
   });
 });
 
-// Formaterer dato fra YYYY-MM-DD til DD-MM-YYYY som Enreach forventer
 function formatDato(iso) {
   const [y, m, d] = iso.split('-');
   return `${d}-${m}-${y}`;
@@ -277,24 +266,17 @@ function sendToEnreach() {
   const selgerId  = document.getElementById('selger').value;
   const p         = PRODUKTER[document.getElementById('produkt').value];
   const startDato = formatDato(document.getElementById('startDato').value);
-  const gade      = document.getElementById('gade').value.trim();
-  const husNr     = document.getElementById('husNr').value.trim();
-  const bogstav   = document.getElementById('bogstav').value.trim();
-  const etage     = document.getElementById('etage').value.trim();
-  const side      = document.getElementById('side').value.trim();
-  const note      = document.getElementById('note').value.trim();
 
-  // ExtFields bygges som semikolon-separeret streng — præcis som Enreach forventer
   const extFields = [
     `User_Org_Code=${selgerId}`,
     `Produkt=${p.navn}`,
     `resultatTilgangsDato=${startDato}`,
-    `Gade=${gade}`,
-    `husNr=${husNr}`,
-    `HusBogstav=${bogstav}`,
-    `etage=${etage}`,
-    `side=${side}`,
-    `Note=${note}`,
+    `Gade=${document.getElementById('gade').value.trim()}`,
+    `husNr=${document.getElementById('husNr').value.trim()}`,
+    `HusBogstav=${document.getElementById('bogstav').value.trim()}`,
+    `etage=${document.getElementById('etage').value.trim()}`,
+    `side=${document.getElementById('side').value.trim()}`,
+    `Note=${document.getElementById('note').value.trim()}`,
     `PolCampaignId=${p.PolCampaignId}`,
     `Videreforselspr=${p.Videreforselspr}`,
     `Provision=${p.Provision}`,
@@ -315,23 +297,20 @@ function sendToEnreach() {
     Telephone1:  document.getElementById('telefonNr').value.trim(),
     Email:       document.getElementById('email').value.trim(),
     CountryCode: "",
-    Username:    API_USERNAME,
-    Password:    API_PASSWORD,
-    SourceID:    SOURCE_ID,
-    Origin:      ORIGIN,
-    ClientId:    CLIENT_ID
+    Username:    "api_playable@politiken.dk",
+    Password:    "U38b-SBkW-49I7",
+    SourceID:    "4310",
+    Origin:      "Politiken_Salgsformular",
+    ClientId:    "344"
   };
 
-  fetch(API_URL, {
+  fetch(MAKE_WEBHOOK, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   })
   .then(res => {
-    if (res.ok || res.status === 204) {
+    if (res.ok) {
       document.getElementById('successToast').style.display = 'block';
       document.querySelectorAll('input[type=text],input[type=tel],input[type=email],input[type=date]').forEach(el => el.value = '');
       document.getElementById('selger').value = '';
@@ -340,7 +319,7 @@ function sendToEnreach() {
       document.getElementById('kundefelter').classList.add('hidden');
     } else {
       res.text().then(txt => {
-        document.getElementById('errorMsg').textContent = `Fejl fra Enreach (${res.status}): ${txt}`;
+        document.getElementById('errorMsg').textContent = `Fejl (${res.status}): ${txt}`;
         document.getElementById('errorToast').style.display = 'block';
       });
     }
