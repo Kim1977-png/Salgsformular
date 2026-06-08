@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Politiken Salgsformular</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f5f5f5; color: #1a1a1a; min-height: 100vh; padding: 2rem 1rem; }
+    .form-wrap { max-width: 520px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 2rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+    h1 { font-size: 18px; font-weight: 600; margin-bottom: 0.25rem; }
+    .subtitle { font-size: 13px; color: #666; margin-bottom: 1.5rem; }
+    .section-label { font-size: 11px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.08em; margin: 1.5rem 0 0.5rem; }
+    .field-row { margin-bottom: 0.75rem; }
+    .field-row label { display: block; font-size: 13px; color: #555; margin-bottom: 4px; }
+    .field-row input, .field-row select {
+      width: 100%; padding: 9px 12px; border: 1px solid #ddd; border-radius: 8px;
+      font-size: 15px; background: #fff; color: #1a1a1a; outline: none;
+      transition: border-color 0.15s;
+    }
+    .field-row input:focus, .field-row select:focus { border-color: #999; }
+    .field-row input.invalid, .field-row select.invalid { border-color: #e53e3e; box-shadow: 0 0 0 2px rgba(229,62,62,0.12); }
+    .field-row .err { font-size: 11px; color: #e53e3e; margin-top: 3px; display: none; }
+    .field-row.has-error .err { display: block; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .three-col { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; }
+    .product-meta { background: #f9f9f9; border-radius: 8px; border: 1px solid #eee; padding: 1rem; margin: 1rem 0; font-size: 13px; }
+    .meta-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #eee; }
+    .meta-row:last-child { border-bottom: none; }
+    .meta-row span:first-child { color: #888; }
+    .meta-row span:last-child { font-weight: 600; font-family: monospace; font-size: 12px; }
+    .meta-title { font-size: 11px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+    .selger-badge { display: inline-block; font-size: 11px; font-family: monospace; background: #f0f0f0; border: 1px solid #ddd; border-radius: 6px; padding: 2px 8px; margin-left: 8px; color: #666; }
+    .submit-btn {
+      width: 100%; margin-top: 1.5rem; padding: 13px;
+      font-size: 15px; font-weight: 600; cursor: pointer;
+      background: #1a1a1a; color: #fff; border: none; border-radius: 8px;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .submit-btn:hover { background: #333; }
+    .submit-btn:active { transform: scale(0.99); }
+    .toast { display: none; border-radius: 8px; padding: 0.75rem 1rem; margin-top: 1rem; font-size: 14px; }
+    .toast.success { background: #f0faf4; color: #276749; border: 1px solid #9ae6b4; }
+    .toast.error { background: #fff5f5; color: #c53030; border: 1px solid #feb2b2; }
+    .hidden { display: none; }
+    .req { color: #e53e3e; margin-left: 2px; }
+    .json-note { font-size: 11px; color: #888; background: #f9f9f9; border-left: 2px solid #ddd; padding: 5px 10px; border-radius: 0 6px 6px 0; margin-bottom: 0.5rem; }
+    .payload-wrap { margin-top: 1.5rem; }
+    .payload-title { font-size: 11px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+    .payload-box { background: #f9f9f9; border: 1px solid #eee; border-radius: 8px; padding: 1rem; font-size: 12px; font-family: monospace; white-space: pre-wrap; word-break: break-all; color: #555; }
+    .loading { text-align: center; color: #888; font-size: 14px; padding: 2rem; }
+    @media (max-width: 480px) {
+      .two-col { grid-template-columns: 1fr; }
+      .three-col { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="form-wrap">
+  <h1>Politiken Salgsformular</h1>
+  <p class="subtitle">Udfyld alle felter og send til Enreach Flow</p>
+
+  <!-- KONFIGURATION: Ret denne URL til din Enreach Flow webhook -->
+  <input type="hidden" id="webhookUrl" value="https://flow.enreach.dk/webhook/INDSÆT-DIN-URL-HER">
+
+  <div id="loadingMsg" class="loading">Indlæser produkter...</div>
+  <div id="formContent" class="hidden">
+
+    <div class="section-label">Sælger</div>
+    <div class="field-row" id="wrap-selger">
+      <label>Betjening af <span class="req">*</span></label>
+      <select id="selger" onchange="updateSelgerBadge()">
+        <option value="">Vælg sælger...</option>
+      </select>
+      <div id="selgerBadge" style="margin-top:6px; display:none; font-size:13px; color:#666;">
+        Sælger-ID: <span class="selger-badge" id="selgerIdVis"></span>
+      </div>
+      <div class="err">Vælg venligst en sælger</div>
+    </div>
+
+    <div class="section-label">Produkt</div>
+    <div class="json-note">📄 Produkter indlæses fra kampagner.json</div>
+    <div class="field-row" id="wrap-produkt">
+      <label>Produkt <span class="req">*</span></label>
+      <select id="produkt" onchange="visProdukt()">
+        <option value="">Vælg produkt...</option>
+      </select>
+      <div class="err">Vælg venligst et produkt</div>
+    </div>
+
+    <div id="produktMeta" class="product-meta hidden">
+      <div class="meta-title">🔒 Produktdata (sendes automatisk)</div>
+      <div id="metaContent"></div>
+    </div>
+
+    <div id="kundefelter" class="hidden">
+      <div class="section-label">Kundeoplysninger</div>
+
+      <div class="field-row" id="wrap-startDato">
+        <label>Start dato <span class="req">*</span></label>
+        <input type="date" id="startDato">
+        <div class="err">Udfyld venligst startdato</div>
+      </div>
+
+      <div class="two-col">
+        <div class="field-row" id="wrap-fornavn">
+          <label>Fornavn <span class="req">*</span></label>
+          <input type="text" id="fornavn" placeholder="Fornavn">
+          <div class="err">Påkrævet</div>
+        </div>
+        <div class="field-row" id="wrap-efternavn">
+          <label>Efternavn <span class="req">*</span></label>
+          <input type="text" id="efternavn" placeholder="Efternavn">
+          <div class="err">Påkrævet</div>
+        </div>
+      </div>
+
+      <div class="three-col">
+        <div class="field-row" id="wrap-gade">
+          <label>Gade <span class="req">*</span></label>
+          <input type="text" id="gade" placeholder="Gadebetegnelse">
+          <div class="err">Påkrævet</div>
+        </div>
+        <div class="field-row" id="wrap-husNr">
+          <label>Hus nr. <span class="req">*</span></label>
+          <input type="text" id="husNr" placeholder="12">
+          <div class="err">Påkrævet</div>
+        </div>
+        <div class="field-row">
+          <label>Bogstav</label>
+          <input type="text" id="bogstav" placeholder="A">
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="field-row">
+          <label>Etage</label>
+          <input type="text" id="etage" placeholder="2.">
+        </div>
+        <div class="field-row">
+          <label>Side</label>
+          <input type="text" id="side" placeholder="tv.">
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="field-row" id="wrap-postNr">
+          <label>Post nr. <span class="req">*</span></label>
+          <input type="text" id="postNr" placeholder="2000">
+          <div class="err">Påkrævet</div>
+        </div>
+        <div class="field-row" id="wrap-by">
+          <label>By <span class="req">*</span></label>
+          <input type="text" id="by" placeholder="Frederiksberg">
+          <div class="err">Påkrævet</div>
+        </div>
+      </div>
+
+      <div class="field-row" id="wrap-telefonNr">
+        <label>Telefon nr. <span class="req">*</span></label>
+        <input type="tel" id="telefonNr" placeholder="12345678" maxlength="8">
+        <div class="err">Indtast et gyldigt 8-cifret telefonnummer</div>
+      </div>
+
+      <div class="field-row" id="wrap-email">
+        <label>E-mail <span class="req">*</span></label>
+        <input type="email" id="email" placeholder="kunde@email.dk">
+        <div class="err">Indtast en gyldig e-mailadresse</div>
+      </div>
+
+      <button class="submit-btn" onclick="sendToEnreach()">Send til Enreach Flow</button>
+    </div>
+
+    <div id="successToast" class="toast success">✓ Ordre sendt til Enreach Flow.</div>
+    <div id="errorToast" class="toast error"><span id="errorMsg">Noget gik galt.</span></div>
+
+    <div id="payloadWrap" class="payload-wrap hidden">
+      <div class="payload-title">Payload sendt (til test)</div>
+      <div class="payload-box" id="payloadBox"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ─── SÆLGERE ───────────────────────────────────────────────────────────────
+// Tilføj eller fjern sælgere her: { id: "SÆLGER-ID", navn: "Navn" }
+const SAELGERE = [
+  { id: "7007", navn: "Kim Erleben" },
+  { id: "7008", navn: "Anna Nielsen" },
+  { id: "7009", navn: "Mikkel Hansen" }
+];
+
+// ─── PRODUKTER ─────────────────────────────────────────────────────────────
+// Indlæses automatisk fra kampagner.json i samme mappe
+let PRODUKTER = [];
+
+async function init() {
+  try {
+    const res = await fetch('kampagner.json');
+    PRODUKTER = await res.json();
+  } catch(e) {
+    document.getElementById('loadingMsg').textContent = 'Kunne ikke indlæse kampagner.json – tjek at filen ligger i samme mappe.';
+    return;
+  }
+
+  const selgerSelect = document.getElementById('selger');
+  SAELGERE.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s.id;
+    opt.textContent = s.navn;
+    selgerSelect.appendChild(opt);
+  });
+
+  const produktSelect = document.getElementById('produkt');
+  PRODUKTER.forEach((p, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = p.navn;
+    produktSelect.appendChild(opt);
+  });
+
+  document.getElementById('loadingMsg').classList.add('hidden');
+  document.getElementById('formContent').classList.remove('hidden');
+}
+
+init();
+
+function updateSelgerBadge() {
+  const val = document.getElementById('selger').value;
+  const badge = document.getElementById('selgerBadge');
+  document.getElementById('selgerIdVis').textContent = val;
+  badge.style.display = val ? 'block' : 'none';
+}
+
+function visProdukt() {
+  const val = document.getElementById('produkt').value;
+  const meta = document.getElementById('produktMeta');
+  const kundefelter = document.getElementById('kundefelter');
+  if (val === '') { meta.classList.add('hidden'); kundefelter.classList.add('hidden'); return; }
+  const p = PRODUKTER[val];
+  const felter = ['CampaignId','CampaignOfferId','Omfatning','BetalingsPeriode','Brand','FuldPris','Videreforselspris','Provision','Id'];
+  document.getElementById('metaContent').innerHTML = felter.map(f =>
+    `<div class="meta-row"><span>${f}</span><span>${p[f]}</span></div>`
+  ).join('');
+  meta.classList.remove('hidden');
+  kundefelter.classList.remove('hidden');
+}
+
+const REQUIRED = [
+  { id: 'selger' }, { id: 'produkt' }, { id: 'startDato' },
+  { id: 'fornavn' }, { id: 'efternavn' }, { id: 'gade' }, { id: 'husNr' },
+  { id: 'postNr' }, { id: 'by' },
+  { id: 'telefonNr', type: 'tel' }, { id: 'email', type: 'email' }
+];
+
+function validate() {
+  let ok = true;
+  REQUIRED.forEach(f => {
+    const el = document.getElementById(f.id);
+    const wrap = document.getElementById('wrap-' + f.id);
+    let valid = f.type === 'tel' ? /^\d{8}$/.test(el.value.trim())
+              : f.type === 'email' ? /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim())
+              : el.value.trim() !== '';
+    el.classList.toggle('invalid', !valid);
+    if (wrap) wrap.classList.toggle('has-error', !valid);
+    if (!valid) ok = false;
+  });
+  return ok;
+}
+
+REQUIRED.forEach(f => {
+  const el = document.getElementById(f.id);
+  if (el) el.addEventListener('input', () => {
+    el.classList.remove('invalid');
+    const wrap = document.getElementById('wrap-' + f.id);
+    if (wrap) wrap.classList.remove('has-error');
+  });
+});
+
+function sendToEnreach() {
+  document.getElementById('successToast').style.display = 'none';
+  document.getElementById('errorToast').style.display = 'none';
+  document.getElementById('payloadWrap').classList.add('hidden');
+
+  if (!validate()) {
+    document.getElementById('errorMsg').textContent = 'Udfyld venligst alle påkrævede felter (*).';
+    document.getElementById('errorToast').style.display = 'block';
+    return;
+  }
+
+  const webhookUrl = document.getElementById('webhookUrl').value.trim();
+  const selgerId = document.getElementById('selger').value;
+  const selgerNavn = SAELGERE.find(s => s.id === selgerId)?.navn || '';
+  const p = PRODUKTER[document.getElementById('produkt').value];
+
+  const payload = {
+    SaelgerId: selgerId,
+    SaelgerNavn: selgerNavn,
+    CampaignId: p.CampaignId,
+    CampaignOfferId: p.CampaignOfferId,
+    Omfatning: p.Omfatning,
+    BetalingsPeriode: p.BetalingsPeriode,
+    Brand: p.Brand,
+    FuldPris: p.FuldPris,
+    Videreforselspris: p.Videreforselspris,
+    Provision: p.Provision,
+    Id: p.Id,
+    StartDato: document.getElementById('startDato').value,
+    Fornavn: document.getElementById('fornavn').value.trim(),
+    Efternavn: document.getElementById('efternavn').value.trim(),
+    Gade: document.getElementById('gade').value.trim(),
+    HusNr: document.getElementById('husNr').value.trim(),
+    Bogstav: document.getElementById('bogstav').value.trim(),
+    Etage: document.getElementById('etage').value.trim(),
+    Side: document.getElementById('side').value.trim(),
+    PostNr: document.getElementById('postNr').value.trim(),
+    By: document.getElementById('by').value.trim(),
+    TelefonNr: document.getElementById('telefonNr').value.trim(),
+    Email: document.getElementById('email').value.trim()
+  };
+
+  // Vis payload til test (fjern denne blok i produktion hvis ønsket)
+  document.getElementById('payloadBox').textContent = JSON.stringify(payload, null, 2);
+  document.getElementById('payloadWrap').classList.remove('hidden');
+
+  if (!webhookUrl || webhookUrl.includes('INDSÆT-DIN-URL-HER')) {
+    document.getElementById('errorMsg').textContent = 'Husk at indsætte Enreach Flow webhook URL i formular.html (søg efter INDSÆT-DIN-URL-HER).';
+    document.getElementById('errorToast').style.display = 'block';
+    return;
+  }
+
+  fetch(webhookUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+  .then(res => {
+    if (res.ok || res.status === 204) {
+      document.getElementById('successToast').style.display = 'block';
+      document.querySelectorAll('input[type=text],input[type=tel],input[type=email],input[type=date]').forEach(el => el.value = '');
+      document.getElementById('selger').value = '';
+      document.getElementById('produkt').value = '';
+      document.getElementById('selgerBadge').style.display = 'none';
+      document.getElementById('produktMeta').classList.add('hidden');
+      document.getElementById('kundefelter').classList.add('hidden');
+      document.getElementById('payloadWrap').classList.add('hidden');
+    } else {
+      document.getElementById('errorMsg').textContent = 'Serverfejl: ' + res.status;
+      document.getElementById('errorToast').style.display = 'block';
+    }
+  })
+  .catch(err => {
+    document.getElementById('errorMsg').textContent = 'Netværksfejl – tjek webhook URL. (' + err.message + ')';
+    document.getElementById('errorToast').style.display = 'block';
+  });
+}
+</script>
+
+</body>
+</html>
