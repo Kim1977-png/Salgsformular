@@ -1,0 +1,26 @@
+[
+  {
+    "navn": "Politiken Digital eavis 3 md. 339 VF 1017",
+    "PolCampaignId": "Telesalg_Digitale_prod",
+    "CampaignOfferId": "DIGI_EAVIS_3M_339_VF_3M_1017",
+    "Omfatning": "Hele ugen",
+    "Betalingsperiode": "3M",
+    "Brand": "Politiken",
+    "FuldPris": "339",
+    "Videreforselspr": "1017",
+    "Provision": "39",
+    "Id": "10"
+  },
+  {
+    "navn": "Politiken Print Hele ugen 12 md. 5499 VF 7790",
+    "PolCampaignId": "Telemarketing_POL_Print",
+    "CampaignOfferId": "P7_12M_5499_VF_12M_7790",
+    "Omfatning": "Hele ugen",
+    "Betalingsperiode": "12M",
+    "Brand": "Politiken",
+    "FuldPris": "5499",
+    "Videreforselspr": "7790",
+    "Provision": "550",
+    "Id": "3"
+  }
+]
