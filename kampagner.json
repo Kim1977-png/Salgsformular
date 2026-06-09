@@ -84,7 +84,7 @@
     "Id": "17"
   },
     {
-    "navn": "Børneavsien 3 md. hver tirsdag 12M 299 VF 469",
+    "navn": "Børneavisen 3 md. hver tirsdag 12M 299 VF 469",
     "PolCampaignId": "Telemarketing_Borneavisen",
     "CampaignOfferId": "BOA_3M_299kr_VF_3M_469kr",
     "Omfatning": "hver tirsdag",
@@ -96,11 +96,11 @@
     "Id": "10"
   },
     {
-    "navn": "Børneavsien 12 mdr. hver tirsdag 12M 999 VF 1539",
+    "navn": "Børneavisen 12 mdr. hver tirsdag 12M 999 VF 1539",
     "PolCampaignId": "Telemarketing_Borneavisen",
     "CampaignOfferId": "BOA_12M_999kr_VF_12M_1539kr",
     "Omfatning": "hver tirsdag",
-    "Betalingsperiode": "6M",
+    "Betalingsperiode": "12M",
     "Brand": "Borneavisen",
     "FuldPris": "999",
     "Videreforselspr": "1539",
