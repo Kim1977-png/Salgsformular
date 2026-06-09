@@ -12,6 +12,54 @@
     "Id": "10"
   },
   {
+    "navn": "Politiken Digital e-avis 6 md. 799 VF 2034",
+    "PolCampaignId": "Telesalg_Digitale_produkter",
+    "CampaignOfferId": "DIGI_EAVIS_6M_799_VF_6M_2034",
+    "Omfatning": "Hele ugen",
+    "Betalingsperiode": "6M",
+    "Brand": "Politiken",
+    "FuldPris": "799",
+    "Videreforselspr": "2034",
+    "Provision": "80",
+    "Id": "11"
+  },
+      {
+    "navn": "Politiken Weekend	Lør 6 md. 999 VF 2219",
+    "PolCampaignId": "Telemarketing_POL_Kombi",
+    "CampaignOfferId": "TM_K_L_6M_999_VF_6M_2219",
+    "Omfatning": "Hele ugen",
+    "Betalingsperiode": "6M",
+    "Brand": "Politiken",
+    "FuldPris": "999",
+    "Videreforselspr": "2219",
+    "Provision": "100",
+    "Id": "8"
+  },
+    {
+    "navn": "Politiken Weekend	Lør-Søn	6 md. 1099 VF 2754",
+    "PolCampaignId": "Telemarketing_POL_Kombi",
+    "CampaignOfferId": "TM_K_LS_6M_1099_VF_6M_2754",
+    "Omfatning": "Hele ugen",
+    "Betalingsperiode": "6M",
+    "Brand": "Politiken",
+    "FuldPris": "1099",
+    "Videreforselspr": "2754",
+    "Provision": "110",
+    "Id": "5"
+  },
+    {
+    "navn": "Politiken Print Hele ugen 3 md. 1699 VF 2390",
+    "PolCampaignId": "Telemarketing_POL_Print",
+    "CampaignOfferId": "P7_3M_1699_VF_3M_2390",
+    "Omfatning": "Hele ugen",
+    "Betalingsperiode": "3M",
+    "Brand": "Politiken",
+    "FuldPris": "1699",
+    "Videreforselspr": "2390",
+    "Provision": "170",
+    "Id": "1"
+  },
+    {
     "navn": "Politiken Print Hele ugen 12 md. 5499 VF 7790",
     "PolCampaignId": "Telemarketing_POL_Print",
     "CampaignOfferId": "P7_12M_5499_VF_12M_7790",
@@ -22,5 +70,53 @@
     "Videreforselspr": "7790",
     "Provision": "550",
     "Id": "3"
+  },
+    {
+    "navn": "Politiken Lyd 3 md. 99 VF 99",
+    "PolCampaignId": "Telemarketing_POL_Standalone",
+    "CampaignOfferId": "LYD_3M_99kr_VF_1M_99kr",
+    "Omfatning": "Hele ugen",
+    "Betalingsperiode": "3M",
+    "Brand": "Politiken",
+    "FuldPris": "99",
+    "Videreforselspr": "99",
+    "Provision": "25",
+    "Id": "17"
+  },
+    {
+    "navn": "Børneavsien 3 md. hver tirsdag 12M 299 VF 469",
+    "PolCampaignId": "Telemarketing_Borneavisen",
+    "CampaignOfferId": "BOA_3M_299kr_VF_3M_469kr",
+    "Omfatning": "hver tirsdag",
+    "Betalingsperiode": "3M",
+    "Brand": "Borneavisen",
+    "FuldPris": "299",
+    "Videreforselspr": "469",
+    "Provision": "30",
+    "Id": "10"
+  },
+    {
+    "navn": "Børneavsien 12 mdr. hver tirsdag 12M 999 VF 1539",
+    "PolCampaignId": "Telemarketing_Borneavisen",
+    "CampaignOfferId": "BOA_12M_999kr_VF_12M_1539kr",
+    "Omfatning": "hver tirsdag",
+    "Betalingsperiode": "6M",
+    "Brand": "Borneavisen",
+    "FuldPris": "999",
+    "Videreforselspr": "1539",
+    "Provision": "100",
+    "Id": "16"
+  },
+    {
+    "navn": "Politiken Ung Digital eavis 3 md. 99 VF 99",
+    "PolCampaignId": "Telesalg_Digitale_produkter",
+    "CampaignOfferId": "DIGI_EAVIS_UNG_3M_99_VF_1M_99",
+    "Omfatning": "Hele ugen",
+    "Betalingsperiode": "3M",
+    "Brand": "Politiken",
+    "FuldPris": "99",
+    "Videreforselspr": "99",
+    "Provision": "10",
+    "Id": "13"
   }
 ]
