@@ -118,5 +118,17 @@
     "Videreforselspr": "99",
     "Provision": "10",
     "Id": "13"
+  },
+    {
+    "navn": "POL_Kombi_L_og_LS_1M",
+    "PolCampaignId": "Telemarketing_POL_Kombi",
+    "CampaignOfferId": "LS_2U_0kr_STOP",
+    "Omfatning": "Hele ugen",
+    "Betalingsperiode": "2U",
+    "Brand": "Politiken",
+    "FuldPris": "0",
+    "Videreforselspr": "0",
+    "Provision": "0",
+    "Id": "18"
   }
 ]
