@@ -23,6 +23,18 @@
     "Provision": "80",
     "Id": "11"
   },
+    {
+    "navn": "Politiken Digital e-avis 12 md. 2049 VF 3661",
+    "PolCampaignId": "Telesalg_Digitale_produkter",
+    "CampaignOfferId": "DIGI_EAVIS_12M_2049_VF_12M3661",
+    "Omfatning": "Hele ugen",
+    "Betalingsperiode": "6M",
+    "Brand": "Politiken",
+    "FuldPris": "799",
+    "Videreforselspr": "2034",
+    "Provision": "80",
+    "Id": "12"
+  },
       {
     "navn": "Politiken Weekend Lør 6 md. 999 VF 2219",
     "PolCampaignId": "Telemarketing_POL_Kombi",
@@ -93,7 +105,7 @@
     "FuldPris": "299",
     "Videreforselspr": "469",
     "Provision": "30",
-    "Id": "10"
+    "Id": "14"
   },
     {
     "navn": "Børneavisen 12 mdr. hver tirsdag 12M 999 VF 1539",
