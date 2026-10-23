@@ -12,15 +12,15 @@
     "Id": "10"
   },
   {
-    "navn": "Politiken Digital e-avis 6 md. 799 VF 2034",
+    "navn": "Politiken Digital e-avis 6 md. 999 VF 2034",
     "PolCampaignId": "Telesalg_Digitale_produkter",
-    "CampaignOfferId": "DIGI_EAVIS_6M_799_VF_6M_2034",
+    "CampaignOfferId": "DIGI_EAVIS_6M_999_VF_6M_2034",
     "Omfatning": "Hele ugen",
     "Betalingsperiode": "6M",
     "Brand": "Politiken",
-    "FuldPris": "799",
+    "FuldPris": "999",
     "Videreforselspr": "2034",
-    "Provision": "80",
+    "Provision": "100",
     "Id": "11"
   },
     {
@@ -28,23 +28,23 @@
     "PolCampaignId": "Telesalg_Digitale_produkter",
     "CampaignOfferId": "DIGI_EAVIS_12M_2049_VF_12M3661",
     "Omfatning": "Hele ugen",
-    "Betalingsperiode": "6M",
+    "Betalingsperiode": "12M",
     "Brand": "Politiken",
-    "FuldPris": "799",
-    "Videreforselspr": "2034",
-    "Provision": "80",
+    "FuldPris": "2049",
+    "Videreforselspr": "3661",
+    "Provision": "205",
     "Id": "12"
   },
       {
-    "navn": "Politiken Weekend Lør 6 md. 999 VF 2219",
+    "navn": "Politiken Weekend Lør 6 md. 1049 VF 2219",
     "PolCampaignId": "Telemarketing_POL_Kombi",
-    "CampaignOfferId": "TM_K_L_6M_999_VF_6M_2219",
+    "CampaignOfferId": "L_6M_1049_VF_6M_2219",
     "Omfatning": "Hele ugen",
     "Betalingsperiode": "6M",
     "Brand": "Politiken",
-    "FuldPris": "999",
+    "FuldPris": "1049",
     "Videreforselspr": "2219",
-    "Provision": "100",
+    "Provision": "105",
     "Id": "8"
   },
     {
