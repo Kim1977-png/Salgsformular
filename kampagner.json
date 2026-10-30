@@ -59,6 +59,18 @@
     "Provision": "110",
     "Id": "5"
   },
+     {
+    "navn": "Politiken Weekend Lør-Søn 12 md. 3600 VF 5279",
+    "PolCampaignId": "Telemarketing_POL_Kombi",
+    "CampaignOfferId": "LS_12M_3600_VF_12M",
+    "Omfatning": "Hele ugen",
+    "Betalingsperiode": "12M",
+    "Brand": "Politiken",
+    "FuldPris": "3600",
+    "Videreforselspr": "5279",
+    "Provision": "360",
+    "Id": "6"
+  },
     {
     "navn": "Politiken Print Hele ugen 3 md. 1699 VF 2390",
     "PolCampaignId": "Telemarketing_POL_Print",
